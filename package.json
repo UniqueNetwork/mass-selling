@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "scripts": {
+    "sub-build": "node substrate/build-csv.js",
+    "sub-sell": "node substrate/selling.js",
+    "sub-delist": "node substrate/delist.js"
+  },
+  "dependencies": {
+    "@unique-nft/accounts": "^0.3.6",
+    "@unique-nft/sdk": "^0.2.17",
+    "@unique-nft/utils": "^0.3.13",
+    "dotenv": "^16.1.4",
+    "prettier": "^2.8.8"
+  }
+}
