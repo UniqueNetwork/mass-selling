@@ -8,7 +8,7 @@ Create an `.evn` file in the project root with the content:
 SUBSTRATE_SEED="here seed phrase"
 COLLECTION_ID=123
 CONTRACT_ADDRESS=0xafb17....
-REST_URL=https://rest.opal.uniquenetwork.dev/v1
+REST_URL=https://rest.unique.network/opal/v1
 ```
 
 ## Build .csv file
