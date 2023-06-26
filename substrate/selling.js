@@ -9,6 +9,7 @@ const contractAddress = process.env.CONTRACT_ADDRESS;
 const abi = JSON.parse(fs.readFileSync("contract-abi.json").toString());
 
 async function main() {
+  console.log("selling:start");
   const { sdk, address } = await initSubstrate();
   const tokens = loadFromFile(collectionId);
 
@@ -19,6 +20,8 @@ async function main() {
 
     await sell(address, contract, tokenId, price);
   }
+
+  console.log("selling:finish");
 }
 
 async function approveIfNeed(sdk, address, tokenId) {

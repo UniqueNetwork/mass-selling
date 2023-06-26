@@ -8,6 +8,8 @@ const contractAddress = process.env.CONTRACT_ADDRESS;
 const abi = JSON.parse(fs.readFileSync("contract-abi.json").toString());
 
 async function main() {
+  console.log("delist:start");
+
   const { sdk, address } = await initSubstrate();
   const tokens = loadFromFile(collectionId);
 
@@ -18,6 +20,8 @@ async function main() {
 
     await revoke(address, contract, tokenId);
   }
+
+  console.log("delist:finish");
 }
 
 async function removeApprove(sdk, address, tokenId) {
