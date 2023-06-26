@@ -16,11 +16,13 @@ async function main() {
 
   const filteredIds = [];
 
+  let count = 0;
   for (const tokenId of ids) {
     const token = await sdk.token.owner({ collectionId, tokenId });
     if (token.owner === address) {
       filteredIds.push(tokenId);
     }
+    console.log(`check owner ${++count}/${ids.length}, tokenId: ${tokenId}`);
   }
 
   console.log(`My tokens count: ${filteredIds.length}`);
