@@ -48,13 +48,15 @@ async function approveIfNeed(sdk, address, tokenId) {
 async function sell(address, contract, tokenId, price) {
   console.log(`---> start sell token: ${tokenId}, price: ${price}`);
 
+  const priceBn = BigInt(price) * BigInt("1000000000000000000");
+
   const callArgs = {
     funcName: "put",
     address,
     args: {
       collectionId,
       tokenId,
-      price,
+      price: priceBn.toString(),
       amount: 1,
       seller: Address.extract.ethCrossAccountId(address),
     },

@@ -25,6 +25,7 @@ After executing the script, the `collection_123.csv` file will be created in the
 | 3        | 1     |
 
 All your tokens from the specified collection are registered in the table. All tokens have a default price of 1, you can change these prices to your liking and save the file there.
+Prices expected to be written without decimals, so 1 in price cell means 1 000 000 000 000 000 000 in contract.
 
 ## Selling
 To put up for sale all the tokens in the created .csv file for the price specified in the file, run the script:
