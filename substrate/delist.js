@@ -1,11 +1,8 @@
 import { initSubstrate } from "./api.js";
 import { loadFromFile } from "../files.js";
-import fs from "fs";
 
 const collectionId = +process.env.COLLECTION_ID;
 const contractAddress = process.env.CONTRACT_ADDRESS;
-
-const abi = JSON.parse(fs.readFileSync("contract-abi.json").toString());
 
 async function main() {
   console.log("delist:start");
@@ -13,12 +10,8 @@ async function main() {
   const { sdk, address } = await initSubstrate();
   const tokens = loadFromFile(collectionId);
 
-  const contract = await sdk.evm.contractConnect(contractAddress, abi);
-
   for (const { tokenId } of tokens) {
     await removeApprove(sdk, address, tokenId);
-
-    await revoke(address, contract, tokenId);
   }
 
   console.log("delist:finish");
