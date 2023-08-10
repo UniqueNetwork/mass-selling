@@ -1,13 +1,18 @@
-# Mass selling
-Scripts for mass offering for the sale of tokens.
+# Mass listing
 
-## Preparation
+These scripts are for those who already minted an extensive NFT collection and want to list a lot of tokens on the [Unique Market](https://unqnft.io). It can help you put NFTs up for sale quickly without manually signing every transaction.
+
+## Setting up environment
+
+1. You will need node.js, git, and Visual Studio Code installed on your computer. If you haven't worked with git, node, and npm before, we recommend reading our [brief guide](https://docs.unique.network/tutorials/minting/setup-environment.html) to configure your environment.
+2. Download [this](https://github.com/UniqueNetwork/mass-selling/tree/master) project and open it in Visual Studio Code, click `File` - `Open Folder...`
+3. Create a file named `.env` in the root directory of your project and copy the contents from the `.env.example` file into it.
 
 Create an `.evn` file in the project root with the content:
 ```dotenv
 SUBSTRATE_SEED="here seed phrase"
 COLLECTION_ID=123
-CONTRACT_ADDRESS=0xafb17....
+CONTRACT_ADDRESS=0xa32194392a947ff2bd8e776e8d6aae957ff6850d
 REST_URL=https://rest.unique.network/opal/v1
 ```
 
