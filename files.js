@@ -4,7 +4,7 @@ export function writeToFile(collectionId, ids) {
   const defaultPrice = 1;
 
   const out = ids
-    .sort()
+    .sort((a,b) => a - b)
     .map((id) => `${id},${defaultPrice}`)
     .join("\n");
 
