@@ -1,5 +1,6 @@
 import { initSubstrate } from "./api.js";
 import { writeToFile } from "../files.js";
+import { Address } from '@unique-nft/utils';
 
 const collectionId = +process.env.COLLECTION_ID;
 
@@ -17,9 +18,10 @@ async function main() {
   const filteredIds = [];
 
   let count = 0;
+
   for (const tokenId of ids) {
     const token = await sdk.token.owner({ collectionId, tokenId });
-    if (token.owner === address) {
+    if (Address.normalize.substrateAddress(token.owner) === Address.normalize.substrateAddress(address)) {
       filteredIds.push(tokenId);
     }
     console.log(`check owner ${++count}/${ids.length}, tokenId: ${tokenId}`);
