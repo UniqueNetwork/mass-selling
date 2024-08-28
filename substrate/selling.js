@@ -57,6 +57,7 @@ async function sell(address, contract, tokenId, price) {
       collectionId,
       tokenId,
       price: priceBn.toString(),
+      currency: 0,
       amount: 1,
       seller: Address.extract.ethCrossAccountId(address),
     },
@@ -68,8 +69,8 @@ async function sell(address, contract, tokenId, price) {
     console.log("sell error", err.message, err.details);
     return;
   }
-  const { parsed } = await contract.send.submitWaitResult(callArgs);
-  console.log("parsed", parsed);
+  const tx = await contract.send.submitWaitResult(callArgs);
+  console.log("Is completed:", tx.isCompleted);
 
   console.log(`<--- complete sell token: ${tokenId}`);
 }
