@@ -1,6 +1,6 @@
 # Mass NFT listing on Unique Market
 
-These scripts are for those who already minted large NFT collection and want to list a lot of tokens on the [Unique Market](https://unqnft.io). It can help you put NFTs up for sale quickly without manually signing every transaction.
+These scripts are for those who have already minted a large NFT collection and want to list many tokens on the [Unique Market](https://unqnft.io). They can help you put NFTs up for sale quickly without manually signing every transaction.
 
 ## ⚙️ Step-1: Setting up environment
 
