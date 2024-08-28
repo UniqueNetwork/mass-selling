@@ -1,6 +1,6 @@
 # Mass NFT listing on Unique Market
 
-These scripts are for those who already minted an extensive NFT collection and want to list a lot of tokens on the [Unique Market](https://unqnft.io). It can help you put NFTs up for sale quickly without manually signing every transaction.
+These scripts are for those who have already minted a large NFT collection and want to list many tokens on the [Unique Market](https://unqnft.io). They can help you put NFTs up for sale quickly without manually signing every transaction.
 
 ## ⚙️ Step-1: Setting up environment
 
@@ -14,7 +14,8 @@ These scripts are for those who already minted an extensive NFT collection and w
 npm install
 ```
 
-> ❗️ Keep your secrets, such as SUBSTRATE_SEED, safe, and do not commit them to version control! We have added .env to the .gitignore file for this purpose.
+> [!IMPORTANT]
+> Keep your secrets, such as `SUBSTRATE_SEED`, safe, and do not commit them to version control! We have added .env to the .gitignore file for this purpose.
 
 In this step, your project should resemble the screenshot below:
 
@@ -25,7 +26,7 @@ In this step, your project should resemble the screenshot below:
 Create a .csv file with a list of tokens that belong to you. Run in terminal:
 
 ```sh:no-line-numbers
-npm run sub-build
+npm run build
 ```
 
 After executing the script, the `collection_123.csv` file will be created in the root of the project with the contents:
@@ -49,7 +50,7 @@ We set tokens 1, 2, 9, and 10 for sale here. Tokens 1 and will be listed for 300
 To put up for sale all the tokens in the created .csv file for the price specified in the file, run the script:
 
 ```sh:no-line-numbers
-npm run sub-sell
+npm run sell
 ```
 
 It will take some time, and in the end, you will see your tokens listed for sale on Unique Market.
@@ -61,5 +62,5 @@ It will take some time, and in the end, you will see your tokens listed for sale
 To remove all the tokens from the created .csv file from the sale, run the script
 
 ```sh:no-line-numbers
-npm run sub-delist
+npm run delist
 ```

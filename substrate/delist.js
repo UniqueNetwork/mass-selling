@@ -1,3 +1,4 @@
+import fs from "fs";
 import { initSubstrate } from "./api.js";
 import { loadFromFile } from "../files.js";
 
@@ -10,32 +11,14 @@ async function main() {
   const { sdk, address } = await initSubstrate();
   const tokens = loadFromFile(collectionId);
 
+  const abi = JSON.parse(fs.readFileSync("contract-abi.json").toString());
+  const marketContract = await sdk.evm.contractConnect(contractAddress, abi);
+
   for (const { tokenId } of tokens) {
-    await removeApprove(sdk, address, tokenId);
+    await revoke(address, marketContract, tokenId);
   }
 
   console.log("delist:finish");
-}
-
-async function removeApprove(sdk, address, tokenId) {
-  const { isAllowed } = await sdk.token.allowance({
-    collectionId,
-    tokenId,
-    from: address,
-    to: contractAddress,
-  });
-
-  if (isAllowed) {
-    console.log("---> start remove approve");
-    await sdk.token.approve({
-      address: address,
-      collectionId,
-      tokenId,
-      isApprove: false,
-      spender: contractAddress,
-    });
-    console.log("<--- complete remove approve");
-  }
 }
 
 async function revoke(address, contract, tokenId) {
@@ -51,9 +34,16 @@ async function revoke(address, contract, tokenId) {
     },
   };
 
-  const { parsed } = await contract.send.submitWaitResult(callArgs);
+  try {
+    await contract.call(callArgs);
+  } catch (err) {
+    console.log("sell error", err.message);
+    return;
+  }
 
-  console.log(`<--- complete revoke token: ${tokenId}`, parsed);
+  const tx = await contract.send.submitWaitResult(callArgs);
+
+  console.log(`<--- complete revoke token: ${tokenId}`, tx.isCompleted);
 }
 
 main();
