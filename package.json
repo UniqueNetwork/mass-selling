@@ -3,12 +3,14 @@
   "scripts": {
     "build": "node substrate/build-csv.js",
     "sell": "node substrate/selling.js",
-    "delist": "node substrate/delist.js"
+    "delist": "node substrate/delist.js",
+    "burn": "node substrate/burn.js"
   },
   "dependencies": {
     "@unique-nft/accounts": "^0.3.6",
     "@unique-nft/sdk": "0.7.7",
     "@unique-nft/utils": "0.3.20",
-    "dotenv": "^16.1.4"
+    "dotenv": "^16.1.4",
+    "axios": "^1.7.2"
   }
 }
