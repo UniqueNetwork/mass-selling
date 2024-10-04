@@ -64,3 +64,47 @@ To remove all the tokens from the created .csv file from the sale, run the scrip
 ```sh:no-line-numbers
 npm run delist
 ```
+
+## 🔥 Burn NFTs
+
+To burn tokens from your collection, follow these steps:
+
+1. Ensure your `COLLECTION_ID` is set correctly in the `.env` file.
+2. Update the `collection_717.csv` file with the token IDs you want to burn. The price column is not used for burning, so you can leave it as is.
+3. Run the burn script:
+
+```sh:no-line-numbers
+npm run burn
+```
+
+This will burn all the tokens listed in the CSV file from your collection.
+
+## 🔄 Transfer NFTs
+
+To transfer tokens to multiple addresses, follow these steps:
+
+1. Ensure your `COLLECTION_ID` is set correctly in the `.env` file.
+2. Update the `collection_717.csv` file with the token IDs you want to transfer.
+3. Create or update the `addresses.csv` file with the recipient addresses, one per line.
+4. Run the transfer script:
+
+```sh:no-line-numbers
+npm run transfer
+```
+
+This will transfer the tokens listed in `collection_717.csv` to the addresses in `addresses.csv`. If there are more tokens than addresses, the script will cycle through the addresses, distributing tokens evenly.
+
+### Transfer Script Features:
+- Progress bar to show transfer status
+- Detailed logging of each transfer
+- Error handling and reporting
+- Saves failed transfers to `error_log.csv` for review
+
+Note: Ensure you have sufficient balance to cover the transaction fees for all transfers.
+
+## ⚠️ Important Notes
+
+- Always double-check your CSV files before running burn or transfer scripts to avoid unintended actions.
+- Keep your `SUBSTRATE_SEED` secure and never share it.
+- Make sure the amount of tokens you want to transfer is divisible by the amount of addresses you want to transfer to so they can be divided evenly.
+- For large collections, consider running the scripts in smaller batches to manage gas fees and reduce the risk of timeouts.
