@@ -1,18 +1,19 @@
 import fs from "fs";
 
 export function writeToFile(collectionId, ids) {
-  const defaultPrice = 1;
+  const defaultPrice = process.env.PRICE ?? 1; // Price without decimals part
+  const defaultCurrency = process.env.CURRENCY ?? 0; // Currency from .env or UNQ (0)
 
   const out = ids
-    .sort((a,b) => a - b)
-    .map((id) => `${id},${defaultPrice}`)
+    .sort((a, b) => a - b)
+    .map((id) => `${id},${defaultPrice},${defaultCurrency}`)
     .join("\n");
 
   const filename = `collection_${collectionId}.csv`;
 
   fs.writeFileSync(
     filename,
-    `token id,price
+    `token id,price,currency
 ${out}`
   );
 
@@ -45,9 +46,18 @@ export function loadFromFile(collectionId) {
         throw new Error("Invalid price in csv file");
       }
 
+      const currency = +data[2];
+      if (!currency) {
+        throw new Error("Invalid currency in csv file");
+      }
+
+      // TODO: move to params
+      if (currency !== 0 && currency !== 437) throw Error("Wrong currency");
+
       return {
         tokenId,
         price,
+        currency,
       };
     });
 }

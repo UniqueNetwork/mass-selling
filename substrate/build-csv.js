@@ -1,6 +1,5 @@
 import { initSubstrate } from "./api.js";
 import { writeToFile } from "../files.js";
-import { Address } from '@unique-nft/utils';
 
 const collectionId = +process.env.COLLECTION_ID;
 
@@ -10,26 +9,14 @@ async function main() {
 
   console.log("sdk init");
 
-  const { ids } = await sdk.collection.tokens({
-    collectionId,
+  const stats = await sdk.collection.accountTokens({
+    address,
+    collectionId
   });
-  console.log(`Found tokens ${ids.length} in collection ${collectionId}`);
 
-  const filteredIds = [];
+  console.log(`My tokens count: ${stats.length}`);
 
-  let count = 0;
-
-  for (const tokenId of ids) {
-    const token = await sdk.token.owner({ collectionId, tokenId });
-    if (Address.normalize.substrateAddress(token.owner) === Address.normalize.substrateAddress(address)) {
-      filteredIds.push(tokenId);
-    }
-    console.log(`check owner ${++count}/${ids.length}, tokenId: ${tokenId}`);
-  }
-
-  console.log(`My tokens count: ${filteredIds.length}`);
-
-  writeToFile(collectionId, filteredIds);
+  writeToFile(collectionId, stats.map(s => s.tokenId));
 
   console.log("build-csv:finish");
 }

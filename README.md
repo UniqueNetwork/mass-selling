@@ -31,18 +31,19 @@ npm run build
 
 After executing the script, the `collection_123.csv` file will be created in the root of the project with the contents:
 
-| token id | price |
-|----------|-------|
-| 1        | 1     |
-| 2        | 1     |
-| 3        | 1     |
+| token id | price | currency |
+| -------- | ----- | -------- |
+| 1        | 1     | 437      |
+| 2        | 1     | 437      |
+| 3        | 1     | 437      |
 
-All your tokens from the specified collection are registered in the table. All tokens have a default price of 1. Change these prices to your liking and save the file.
-Prices are expected to be written without decimals, so 1 in the price cell means 1 000 000 000 000 000 000 in a contract.
+All your tokens from the specified collection are registered in the table. All tokens have a default price of `PRICE` and `CURRENCY` envs. Change these prices to your liking and save the file.
+
+Prices are expected to be written without decimals, so 1 in the price cell means `1000000000000000000` in a contract for UNQ or `10000000000` for DOT.
 
 Set the desired price for the tokens you want to list on Unique Market and remove all the tokens you don't want to sell.
 
-We set tokens 1, 2, 9, and 10 for sale here. Tokens 1 and will be listed for 300 UNQ. Tokens 9 and 10 for 500 UNQ
+We set tokens 1, 2, 9, and 10 for sale here. Tokens 1 and 2 will be listed for `300 UNQ`. Tokens 9 and 10 for `3 DOT`
 ![Prepare for sale](./docs/prepare.png)
 
 ## 🎁 Step-3: List your NFTs for sale

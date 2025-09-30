@@ -4,6 +4,7 @@ import { loadFromFile } from "../files.js";
 
 const collectionId = +process.env.COLLECTION_ID;
 const contractAddress = process.env.CONTRACT_ADDRESS;
+const abi = JSON.parse(fs.readFileSync("contract-abi.json").toString());
 
 async function main() {
   console.log("delist:start");
@@ -11,39 +12,36 @@ async function main() {
   const { sdk, address } = await initSubstrate();
   const tokens = loadFromFile(collectionId);
 
-  const abi = JSON.parse(fs.readFileSync("contract-abi.json").toString());
-  const marketContract = await sdk.evm.contractConnect(contractAddress, abi);
-
   for (const { tokenId } of tokens) {
-    await revoke(address, marketContract, tokenId);
+    await revoke(address, sdk, tokenId);
   }
 
   console.log("delist:finish");
 }
 
-async function revoke(address, contract, tokenId) {
+async function revoke(address, sdk, tokenId) {
   console.log(`---> start revoke token: ${tokenId}`);
 
   const callArgs = {
-    funcName: "revoke",
+    functionName: "revoke",
     address,
-    args: {
-      collectionId,
-      tokenId,
-      amount: 1,
+    functionArgs: [collectionId, tokenId, 1],
+    contract: {
+      address: contractAddress,
+      abi,
     },
   };
 
   try {
-    await contract.call(callArgs);
+    await sdk.evm.call({ ...callArgs, senderAddress: address });
   } catch (err) {
     console.log("sell error", err.message);
     return;
   }
 
-  const tx = await contract.send.submitWaitResult(callArgs);
+  const tx = await sdk.evm.send(callArgs);
 
-  console.log(`<--- complete revoke token: ${tokenId}`, tx.isCompleted);
+  console.log(`<--- complete revoke token: ${tokenId}`, tx.result.isSuccessful);
 }
 
 main();
