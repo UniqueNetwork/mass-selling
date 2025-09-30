@@ -1,9 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { Sdk } from "@unique-nft/sdk/full";
-import { Accounts } from "@unique-nft/accounts";
-import { KeyringProvider } from "@unique-nft/accounts/keyring";
+import { UniqueChain } from "@unique-nft/sdk";
+import { Sr25519Account } from "@unique-nft/sr25519";
 
 export async function initSubstrate() {
   const { SUBSTRATE_SEED, REST_URL, CONTRACT_ADDRESS, COLLECTION_ID } =
@@ -29,15 +28,11 @@ export async function initSubstrate() {
     process.exit(-1);
   }
 
-  const accounts = new Accounts();
-  const keyringProvider = await accounts.addProvider(KeyringProvider, {
-    type: "sr25519",
-  });
-  const account = keyringProvider.addSeed(SUBSTRATE_SEED);
+  const account = Sr25519Account.fromUri(SUBSTRATE_SEED);
 
-  const sdk = new Sdk({
+  const sdk = UniqueChain({
     baseUrl: REST_URL,
-    signer: account,
+    account,
   });
 
   return {

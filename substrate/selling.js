@@ -13,64 +13,71 @@ async function main() {
   const { sdk, address } = await initSubstrate();
   const tokens = loadFromFile(collectionId);
 
-  const contract = await sdk.evm.contractConnect(contractAddress, abi);
+  for (const { tokenId, price, currency } of tokens) {
+    await approveIfNeed(sdk, tokenId);
 
-  for (const { tokenId, price } of tokens) {
-    await approveIfNeed(sdk, address, tokenId);
-
-    await sell(address, contract, tokenId, price);
+    await sell(sdk, address, tokenId, price, currency);
   }
 
   console.log("selling:finish");
 }
 
-async function approveIfNeed(sdk, address, tokenId) {
-  const { isAllowed } = await sdk.token.allowance({
+async function approveIfNeed(sdk, tokenId) {
+  const { isApproved } = await sdk.token.getApproved({
     collectionId,
     tokenId,
-    from: address,
-    to: contractAddress,
+    spender: contractAddress,
   });
 
-  if (!isAllowed) {
+  if (!isApproved) {
     console.log("---> start approve contract");
     await sdk.token.approve({
-      address: address,
       collectionId,
       tokenId,
-      isApprove: true,
       spender: contractAddress,
     });
     console.log("<--- complete approve contract");
   }
 }
 
-async function sell(address, contract, tokenId, price) {
-  console.log(`---> start sell token: ${tokenId}, price: ${price}`);
+async function sell(sdk, address, tokenId, price, currency) {
+  console.log(`---> start selling token: ${tokenId}, price: ${price}`);
 
-  const priceBn = BigInt(price) * BigInt("1000000000000000000");
+  let decimals;
+
+  switch (currency) {
+    case 0:
+      decimals = BigInt("1000000000000000000");
+      break;
+    case 437:
+      decimals = BigInt("10000000000");
+      break;
+    default:
+      throw Error("Wrong currency");
+  }
+
+  const priceBn = (BigInt(price) * decimals).toString();
+
+  const sellerCross = Address.extract.ethCrossAccountId(address);
 
   const callArgs = {
-    funcName: "put",
-    address,
-    args: {
-      collectionId,
-      tokenId,
-      price: priceBn.toString(),
-      currency: 0,
-      amount: 1,
-      seller: Address.extract.ethCrossAccountId(address),
+    functionName: "put",
+    functionArgs: [[collectionId, tokenId, 1, currency, priceBn, sellerCross]],
+    contract: {
+      address: contractAddress,
+      abi,
     },
+    gasLimit: 200000,
   };
 
   try {
-    await contract.call(callArgs);
+    await sdk.evm.call({ ...callArgs, senderAddress: address });
   } catch (err) {
-    console.log("sell error", err.message, err.details);
+    console.log("sell error", err.message);
     return;
   }
-  const tx = await contract.send.submitWaitResult(callArgs);
-  console.log("Is completed:", tx.isCompleted);
+  const tx = await sdk.evm.send(callArgs);
+  console.log("Is completed:", tx.result.isSuccessful);
 
   console.log(`<--- complete sell token: ${tokenId}`);
 }

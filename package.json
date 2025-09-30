@@ -8,6 +8,7 @@
   "dependencies": {
     "@unique-nft/accounts": "^0.3.7",
     "@unique-nft/sdk": "^2.9.0",
+    "@unique-nft/sr25519": "^0.0.2",
     "@unique-nft/utils": "^0.3.22",
     "dotenv": "^16.1.4"
   }
